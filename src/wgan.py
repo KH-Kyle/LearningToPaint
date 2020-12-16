@@ -7,7 +7,7 @@ from torch.autograd import Variable
 import torch.nn.functional as F
 from torch.autograd import grad as torch_grad
 import torch.nn.utils.weight_norm as weightNorm
-from utils.util import *
+from src.util import *
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 dim = 128
@@ -27,7 +27,8 @@ class Discriminator(nn.Module):
         def __init__(self):
             super(Discriminator, self).__init__()
 
-            self.conv0 = weightNorm(nn.Conv2d(6, 16, 5, 2, 2))
+            # self.conv0 = weightNorm(nn.Conv2d(6, 16, 5, 2, 2))  # for RGB
+            self.conv0 = weightNorm(nn.Conv2d(2, 16, 5, 2, 2))  # for grayscale
             self.conv1 = weightNorm(nn.Conv2d(16, 32, 5, 2, 2))
             self.conv2 = weightNorm(nn.Conv2d(32, 64, 5, 2, 2))
             self.conv3 = weightNorm(nn.Conv2d(64, 128, 5, 2, 2))
@@ -61,9 +62,9 @@ optimizerD = Adam(netD.parameters(), lr=3e-4, betas=(0.5, 0.999))
 def cal_gradient_penalty(netD, real_data, fake_data, batch_size):
     alpha = torch.rand(batch_size, 1)
     alpha = alpha.expand(batch_size, int(real_data.nelement()/batch_size)).contiguous()
-    alpha = alpha.view(batch_size, 6, dim, dim)
+    alpha = alpha.view(batch_size, 2, dim, dim)  # for grayscale
     alpha = alpha.to(device)
-    fake_data = fake_data.view(batch_size, 6, dim, dim)
+    fake_data = fake_data.view(batch_size, 2, dim, dim)  # for grayscale
     interpolates = Variable(alpha * real_data.data + ((1 - alpha) * fake_data.data), requires_grad=True)
     disc_interpolates = netD(interpolates)
     gradients = autograd.grad(disc_interpolates, interpolates,

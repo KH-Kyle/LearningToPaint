@@ -4,6 +4,8 @@ from torch.autograd import Variable
 
 USE_CUDA = torch.cuda.is_available()
 
+STROKES_PATH = "./strokes.txt"
+
 def prRed(prt): print("\033[91m {}\033[00m" .format(prt))
 def prGreen(prt): print("\033[92m {}\033[00m" .format(prt))
 def prYellow(prt): print("\033[93m {}\033[00m" .format(prt))
@@ -67,3 +69,22 @@ def get_output_folder(parent_dir, env_name):
     parent_dir = parent_dir + '-run{}'.format(experiment_id)
     os.makedirs(parent_dir, exist_ok=True)
     return parent_dir
+
+
+def get_character_strokes(character):
+    """
+    Returns the number of strokes for a given Chinese character.
+    """
+    strokes = []
+    with open(STROKES_PATH, 'r') as fr:
+        for line in fr:
+            strokes.append(int(line.strip()))
+
+    unicode_ = ord(character)
+
+    if 13312 <= unicode_ <= 64045:
+        return strokes[unicode_-13312]
+    elif 131072 <= unicode_ <= 194998:
+        return strokes[unicode_-80338]
+    else:
+        return 0
