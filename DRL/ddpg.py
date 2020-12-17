@@ -21,7 +21,7 @@ coord = coord.to(device)
 criterion = nn.MSELoss()
 
 Decoder = FCN()
-Decoder.load_state_dict(torch.load('../renderer.pkl'))
+Decoder.load_state_dict(torch.load('./renderer.pkl'))
 
 def decode(x, canvas): # b * (10 + 3)
     x = x.view(-1, 10 + 3)
@@ -34,6 +34,7 @@ def decode(x, canvas): # b * (10 + 3)
     color_stroke = color_stroke.view(-1, 5, 3, 128, 128)
     for i in range(5):
         canvas = canvas * (1 - stroke[:, i]) + color_stroke[:, i]
+    print(canvas.shape)
     return canvas
 
 def cal_trans(s, t):
@@ -88,10 +89,10 @@ class DDPG(object):
         canvas = state[:, :3]
         gt = state[:, 3 : 6]
         fake, real, penal = update(canvas.float() / 255, gt.float() / 255)
-        if self.log % 20 == 0:
-            self.writer.add_scalar('train/gan_fake', fake, self.log)
-            self.writer.add_scalar('train/gan_real', real, self.log)
-            self.writer.add_scalar('train/gan_penal', penal, self.log)       
+        # if self.log % 20 == 0:
+        #     self.writer.add_scalar('train/gan_fake', fake, self.log)
+        #     self.writer.add_scalar('train/gan_real', real, self.log)
+        #     self.writer.add_scalar('train/gan_penal', penal, self.log)       
         
     def evaluate(self, state, action, target=False):
         T = state[:, 6 : 7]
@@ -108,9 +109,9 @@ class DDPG(object):
             return (Q + gan_reward), gan_reward
         else:
             Q = self.critic(merged_state)
-            if self.log % 20 == 0:
-                self.writer.add_scalar('train/expect_reward', Q.mean(), self.log)
-                self.writer.add_scalar('train/gan_reward', gan_reward.mean(), self.log)
+            # if self.log % 20 == 0:
+            #     self.writer.add_scalar('train/expect_reward', Q.mean(), self.log)
+            #     self.writer.add_scalar('train/gan_reward', gan_reward.mean(), self.log)
             return (Q + gan_reward), gan_reward
     
     def update_policy(self, lr):

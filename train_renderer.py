@@ -8,7 +8,7 @@ from utils.tensorboard import TensorBoard
 from Renderer.model import FCN
 from Renderer.stroke_gen import *
 
-writer = TensorBoard("../train_log/")
+# writer = TensorBoard("../train_log/")
 import torch.optim as optim
 
 criterion = nn.MSELoss()
@@ -66,17 +66,17 @@ while step < 500000:
         lr = 1e-6
     for param_group in optimizer.param_groups:
         param_group["lr"] = lr
-    writer.add_scalar("train/loss", loss.item(), step)
+    # writer.add_scalar("train/loss", loss.item(), step)
     if step % 100 == 0:
         net.eval()
         gen = net(train_batch)
         loss = criterion(gen, ground_truth)
-        writer.add_scalar("val/loss", loss.item(), step)
+        # writer.add_scalar("val/loss", loss.item(), step)
         for i in range(32):
             G = gen[i].cpu().data.numpy()
             GT = ground_truth[i].cpu().data.numpy()
-            writer.add_image("train/gen{}.png".format(i), G, step)
-            writer.add_image("train/ground_truth{}.png".format(i), GT, step)
+            # writer.add_image("train/gen{}.png".format(i), G, step)
+            # writer.add_image("train/ground_truth{}.png".format(i), GT, step)
     if step % 1000 == 0:
         save_model()
     step += 1
