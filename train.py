@@ -112,6 +112,6 @@ if __name__ == "__main__":
                 #  DDPG(args.batch_size, args.env_batch, args.max_step, \
                 #  args.tau, args.discount, args.rmsize, \
                 #  writer, args.resume, args.output)
-    evaluate = Evaluator(args, writer)
+    evaluate = Evaluator(args) #, writer)
     print('observation_space', fenv.observation_space, 'action_space', fenv.action_space)
     train(agent, fenv, evaluate)

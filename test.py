@@ -9,6 +9,7 @@ import torch.nn.functional as F
 from DRL.actor import *
 from Renderer.stroke_gen import *
 from Renderer.model import *
+from Renderer.style_transfer.style_transfer import evaluate as transfer
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 width = 128
@@ -88,16 +89,19 @@ def smooth(img):
     return img
 
 def save_img(res, imgid, divide=False):
-    output = res.detach().cpu().numpy() # d * d, 3, width, width    
-    output = np.transpose(output, (0, 2, 3, 1))
-    if divide:
-        output = small2large(output)
-        output = smooth(output)
-    else:
-        output = output[0]
-    output = (output * 255).astype('uint8')
-    output = cv2.resize(output, origin_shape)
-    cv2.imwrite('output/generated' + str(imgid) + '.png', output)
+    transfer(res, \
+        'output/generated' + str(imgid) + '.png', \
+        "/Users/kyleghz/Downloads/PyTorch-Multi-Style-Transfer-master/experiments/images/21styles/candy.jpg")
+    # output = res.detach().cpu().numpy() # d * d, 3, width, width    
+    # output = np.transpose(output, (0, 2, 3, 1))
+    # if divide:
+    #     output = small2large(output)
+    #     output = smooth(output)
+    # else:
+    #     output = output[0]
+    # output = (output * 255).astype('uint8')
+    # output = cv2.resize(output, origin_shape)
+    # cv2.imwrite('output/generated' + str(imgid) + '.png', output)
 
 actor = ResNet(9, 18, 65) # action_bundle = 5, 65 = 5 * 13
 actor.load_state_dict(torch.load(args.actor))
