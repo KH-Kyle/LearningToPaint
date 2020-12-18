@@ -75,7 +75,11 @@ Since we can treat styling information as a code, we just need to think of where
 
 After the brainstorm and experiments, we got some results. The first option did not converage well, it might because of the hyperparam or we did not have a good model architecture. For the second option, instead of training a new renderer with style transfer, we would simplely pass the output of the renderer into the style transfer model. By doing this, it avoids the probability of model divergence and saves time. Training a new nerual renderer requrires high computational power. For the third method, the model did not coverage. We thought it should be the problem of the problem set-up. Since learning from original image but comparing with styled iamge is too hard for model to learn.
 ### Visual Results
-
+| Target Image | Style Image | Output |
+|--------------|-------------|--------|
+|![Demo](./material/flowers.jpg)|![Demo](./material/feathers.jpg)|![Demo](./material/flower.gif)|
+|![Demo](./material/shenyang.jpg)|![Demo](./material/candy.jpg)|![Demo](./material/temple.gif)|
+|![Demo](./material/venice-boat.jpg)|![Demo](./material/wave.jpg)|![Demo](./material/boat.gif)|
 ## Dataset
 - [CelebA](http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html) 
 
