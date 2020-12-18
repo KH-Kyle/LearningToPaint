@@ -79,7 +79,7 @@ After the brainstorm and experiments, we got some results. The first option did 
 |--------------|-------------|--------|
 |![Demo](./material/flowers.jpg)|![Demo](./material/feathers.jpg)|![Demo](./material/flower.gif)|
 |![Demo](./material/shenyang.jpg)|![Demo](./material/candy.jpg)|![Demo](./material/temple.gif)|
-|![Demo](./material/venice-boat.jpg)|![Demo](./material/wave.jpg)|![Demo](./material/boat.gif)|
+|![Demo](./material/seattle.png)|![Demo](./material/wave.jpg)|![Demo](./material/seattle.gif)|
 ## Dataset
 - [CelebA](http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html) 
 
