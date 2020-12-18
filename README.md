@@ -8,9 +8,7 @@ VIDEO GOES HERE (probably): Record a 2-3 minute long video presenting your work.
 - [Related Work](#related-work)
 - [General Approach](#general-approach)
 - [Autonomous Chinese Writing Agent](#autonomous-chinese-writing-agent)
-    - [Contribution](#contribution)
-    - [Results](#results)
-    - [Discussion](#discussion)
+    - [Documentation](#documentation)
 - [Learning to Paint with Style](#learning-to-paint-with-style)
     - [Discussion](#discussion)
     - [Visual Results](#visual-results)
@@ -43,21 +41,9 @@ Here are graphs representing the overall architecture of training and testing. I
 ## Autonomous Chinese Writing Agent
 
 The code is in _chinese-character_ branch. For this experiment, we implemented the entire learning process. Many parameter changed since the chinese character dataset is greyscale and we only used pretrained renderer. 
-### Contribution
-
-How did you decide to solve the problem? What network architecture did you use? What data? Lots of details here about all the things you did. This section describes almost your whole project.
-
-Figures are good here. Maybe you present your network architecture or show some example data points?
-
-### Results
-
-How did you evaluate your approach? How well did you do? What are you comparing to? Maybe you want ablation studies or comparisons of different methods.
-
-You may want some qualitative results and quantitative results. Example images/text/whatever are good. Charts are also good. Maybe loss curves or AUC charts. Whatever makes sense for your evaluation.
-
-### Discussion
-
-You can talk about your results and the stuff you've learned here if you want. Or discuss other things. Really whatever you want, it's your project.
+### Documentation
+Since we have written a fully report for this part, we just attach the document below. 
+[Autonomous Writing Agent](https://github.com/KH-Kyle/LearningToPaint/blob/master/material/autonomous_chinese_writing_agent.pdf)
 
 ## Learning to Paint with Style 
 
