@@ -1,8 +1,8 @@
 # Learning to Paint
 This project is inspired by the original [ICCV2019 paper](https://arxiv.org/abs/1903.04411). We built an agent that can draw paintings like how human do, using a neural renderer combined with Deep Reinforcement Learning. It would decompose a given image into strokes and then apply each stroke onto an empty canvas to create a visual simlar output. After we 1) re-implement essential parts and recover the result from the paper, we focus on 2) applying the technique to a Chinese character dataset and improve RL performance; 3) adding a style transfer into the architecture so that the agent can draw image with given style.
 
-VIDEO GOES HERE (probably): Record a 2-3 minute long video presenting your work. One option - take all your figures/example images/charts that you made for your website and put them in a slide deck, then record the video over zoom or some other recording platform (screen record using Quicktime on Mac OS works well). The video doesn't have to be particularly well produced or anything.
 
+[![Watch the video](./material/front.png)](https://youtu.be/2DSS6LhKXLA)
 ## Table of Contents
 - [Introduction](#introduction)
 - [Related Work](#related-work)
@@ -82,21 +82,23 @@ For this experiment, we modified the original implementation by adding the style
 ### Discussion
 We applied the style transfer implementation from [this repo](https://github.com/zhanghang1989/PyTorch-Multi-Style-Transfer). It uses the Multi-style Generative Network.
 
-Since we can treat styling information as a code, we just need to think of where we should embed this information into the agent. Of course, it is possible to transfer the entire image with style before or after the entire painting process. However, it lacks the fun of training the agent and see how the original model would perform. Therefore, we suggested three different places to add the styling information. 
+Since we can treat styling information as a code, we just need to think of where we should embed this information into the agent. Of course, it is possible to transfer the entire image with style before or after the entire painting process. However, it lacks the fun of training the agent and see how the original model would perform. Therefore, we suggested three different places to add the styling information, as shown below.
+
+![Demo](./material/model.png)
 
 <ol>
+<li> Input styled target into the critic for calculation.
 <li> Embed the infomration in actor to generate styled action and directly apply the styled action in the renderer.
 <li> Embed the information in renderer, so the renderer would generate styled state.
-<li> Input styled target into the discriminator for calculation.
 </ol>
 
 After the brainstorming and experiments, we got some results:
 
-The first option did not converage well, it might because we didn't tune the hyperparameters well or we did not have a good model architecture.
+For the first method, the model did not coverage. We thought the issue could reside in the problem set-up. Since learning from original image but comparing with styled iamge is too hard for model to learn.
 
-For the second option, instead of training a new renderer with style transfer, we would simplly pass the output of the renderer into the style transfer model. By doing this, it avoids the probability of model divergence and saves time. Training a new nerual renderer requrires high computational power.
+The second option did not converage well, it might because we didn't tune the hyperparameters well or we did not have a good model architecture.
 
-For the third method, the model did not coverage. We thought the issue could reside in the problem set-up. Since learning from original image but comparing with styled iamge is too hard for model to learn.
+For the third option, instead of training a new renderer with style transfer, we would simplly pass the output of the renderer into the style transfer model. By doing this, it avoids the probability of model divergence and saves time. Training a new nerual renderer requrires high computational power.
 ### Visual Results
 | Target Image | Style Image | Output |
 |--------------|-------------|--------|
