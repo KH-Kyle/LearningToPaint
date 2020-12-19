@@ -4,14 +4,16 @@ This project is inspired by the original [ICCV2019 paper](https://arxiv.org/abs/
 VIDEO GOES HERE (probably): Record a 2-3 minute long video presenting your work. One option - take all your figures/example images/charts that you made for your website and put them in a slide deck, then record the video over zoom or some other recording platform (screen record using Quicktime on Mac OS works well). The video doesn't have to be particularly well produced or anything.
 
 ## Table of Contents
-- [Introduction](#Introduction)
+- [Introduction](#introduction)
 - [Related Work](#related-work)
 - [General Approach](#general-approach)
-- [Autonomous Chinese Writing Agent](#autonomous-chinese-writing-agent)
-    - [Documentation](#documentation)
+- [Learning to Write Chinese Characters](#learning-to-write-chinese-characters)
+  - [Modifications](#modifications)
 - [Learning to Paint with Style](#learning-to-paint-with-style)
-    - [Discussion](#discussion)
-    - [Visual Results](#visual-results)
+  - [Discussion](#discussion)
+  - [Visual Results](#visual-results)
+  - [Cross-Section Result](#cross-section-result)
+- [Conclusion](#onclusion)
 
 ## Introduction
 No matter in which forms of art, it always comprises the process of perception, understanding, and expression. The expression step shows the wisdom and creativity of human beings. Different people have different idea about an object and they would use different styles to express their feeling. Specifically, painting has been a mainstream form of art for decades. Most people spend a huge amount of time to master this skill. It would be an interesting work to teach machines how to paint. *Huang et al.* introduces an idea about employing a neural renderer in model-based Deep Reinforcement Learning to get an agent learn to make long-term plans to decompose images into strokes. The agent also learns to determine the position and color of each stroke. We recovered their work with our own implementation and then extended based on that. 
