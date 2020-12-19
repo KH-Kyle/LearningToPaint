@@ -16,15 +16,18 @@ VIDEO GOES HERE (probably): Record a 2-3 minute long video presenting your work.
 ## Introduction
 No matter in which forms of art, it always comprises the process of perception, understanding, and expression. The expression step shows the wisdom and creativity of human beings. Different people have different idea about an object and they would use different styles to express their feeling. Specifically, painting has been a mainstream form of art for decades. Most people spend a huge amount of time to master this skill. It would be an interesting work to teach machines how to paint. *Huang et al.* introduces an idea about employing a neural renderer in model-based Deep Reinforcement Learning to get an agent learn to make long-term plans to decompose images into strokes. The agent also learns to determine the position and color of each stroke. We recovered their work with our own implementation and then extended based on that. 
 
-Since writing Chinese character also requries a stroke by strokes strategy,   we attempted to modify the existing model so that we could train an autonomous writing agent that writes Chinese characters like how a human would write. 
+To fully explore different aspects of the original model, we took two seperate approaches in terms of innovations on top of the original paper. Since the original project operates on images, our two approaches focused on the structure of images and the texture of imagesm, respectively.
 
-Besides, it would be nice that the agent can draw a given image with different style. Nerual Style Transfer has alway been a popular topic over years. Now, we combine the idea with our model to generate a painted image with desired styling. 
+To explore how the model works the best to extract the structure of an image, we first attempted to modify the model so that instead of painting an given image, it writes a Chinese character stroke by stroke when given a image of such a character. The focus of this section is to modify the model so that during training, it focus more on the structure of the given image, instead of the texture so that it writes a clean Character.
+
+On the other hand, to explore how the model works the best to extract the texture of an image, we then attepmted to modify the orginal model so that the agent can draw a given image with different style. Nerual Style Transfer has alway been a popular topic over years. Now, we combine the idea with our model to generate a painted image with desired styling. In this section of our project, we focused on how to perserve the feature of the original model that it extracts good textures from the original image and then further apply style transfer on top of that.
 
 ## Related Work
 
 Our work is highly related to [ICCV2019-Learning to Paint](https://github.com/megvii-research/ICCV2019-LearningToPaint) and [PyTorch-Multi-Style-Transfer](https://github.com/zhanghang1989/PyTorch-Multi-Style-Transfer). We apply the idea from the former and use partial codes from both repo to train our model.
 
 ## General Approach
+
 Here are graphs representing the overall architecture of training and testing. In different sections, we will mention which parts we implemented by ourselves and which parts we adopted original implementation.
 
 ![Training](./material/training.png)
@@ -38,16 +41,34 @@ Here are graphs representing the overall architecture of training and testing. I
 <li> Critic: Predict value function for current state
 </ul>
 
-## Autonomous Chinese Writing Agent
+## Learning to Write Chinese Characters
+Upon successful replication of the original work, we first modified the model so that it can write a Chinese character stroke by stroke when given an image of such character.
 
-The code is in _chinese-character_ branch. For this experiment, we implemented the entire learning process. Many parameter changed since the chinese character dataset is greyscale and we only used pretrained renderer. 
-### Documentation
-Since we have written a fully report for this part, we just attach the document below. 
-[Autonomous Writing Agent](https://github.com/KH-Kyle/LearningToPaint/blob/master/material/autonomous_chinese_writing_agent.pdf)
+### Modifications
+The original model does not work well on our specific task because when it is given an image of a character, it attempts to draw that character using small an thick strokes full of textures. However, when a human writes a character, the strokes used are typically long and thick strokes. Below is an example of how the original model fails at our task:
+
+![Wrting Process of Orginal Model](./material/qianghua_process_original.png)
+
+The picture above shows how the original model attempts to write 2 Chinese characters that mean "reinforce" in English. The original model used 105 and 70 strokes, respectively, to replicate the two characters, while in Chinese the correct way of writing those characters only requires 12 and 4 strokes, respectively.
+
+Therefore, we largly modified the model so that it only focuses on structure of any given image. Here are some important aspects of the changes we made:
+<ul>
+<li> We reduced the number of channels of the target image and the current canvas in our state representation to 1 from 3, so that we treat all given images as having on grayscale values.
+<li> We simplified the architectures of the actor and the critic, which are two ResNets, so that they only focus on the structure of given images, rather than textures.
+<li> We modified the discriminator so that it generates large rewards for long and thin strokes and penalize small and thick strokes.
+<li> We modfiied the renderer so that it renders strokes in grayscale.
+</ul>
+
+After applying all the modification above (code is in _chinese-character_ branch), we obtained the following result on the same task:
+
+![Wrting Process of Our Model](./material/qianghua_process_stepThick.png)
+
+The picture above shows how our modified model writes the same 2 Chinese characters that mean "reinforce" in English. This time, our model used 32 and 14 strokes, respectively, to accomplish the task, which is significantly less than what the original model needed. Moreover, the picture shows that the resulting images look much cleaner and more like how a human would write those characters.
 
 ## Learning to Paint with Style 
+After exploring how to modify the model so that it focuses mostly on structures, we took the other extreme aspect, which is to explore how the model extracts the textures of given images.
 
-For this experiment, we modified the original implementation by add the style transfer implementation. We tuned the models based on pretrained weights given by the author.
+For this experiment, we modified the original implementation by adding the style transfer implementation. We tuned the models based on pretrained weights given by the author.
 ### Discussion
 We applied the style transfer implementation from [this repo](https://github.com/zhanghang1989/PyTorch-Multi-Style-Transfer). It uses the Multi-style Generative Network.
 
@@ -59,13 +80,28 @@ Since we can treat styling information as a code, we just need to think of where
 <li> Input styled target into the discriminator for calculation.
 </ol>
 
-After the brainstorm and experiments, we got some results. The first option did not converage well, it might because of the hyperparam or we did not have a good model architecture. For the second option, instead of training a new renderer with style transfer, we would simplely pass the output of the renderer into the style transfer model. By doing this, it avoids the probability of model divergence and saves time. Training a new nerual renderer requrires high computational power. For the third method, the model did not coverage. We thought it should be the problem of the problem set-up. Since learning from original image but comparing with styled iamge is too hard for model to learn.
+After the brainstorming and experiments, we got some results:
+
+The first option did not converage well, it might because we didn't tune the hyperparameters well or we did not have a good model architecture.
+
+For the second option, instead of training a new renderer with style transfer, we would simplly pass the output of the renderer into the style transfer model. By doing this, it avoids the probability of model divergence and saves time. Training a new nerual renderer requrires high computational power.
+
+For the third method, the model did not coverage. We thought the issue could reside in the problem set-up. Since learning from original image but comparing with styled iamge is too hard for model to learn.
 ### Visual Results
 | Target Image | Style Image | Output |
 |--------------|-------------|--------|
 |![Demo](./material/flowers.jpg)|![Demo](./material/feathers.jpg)|![Demo](./material/flower.gif)|
 |![Demo](./material/shenyang.jpg)|![Demo](./material/candy.jpg)|![Demo](./material/temple.gif)|
 |![Demo](./material/seattle.png)|![Demo](./material/wave.jpg)|![Demo](./material/seattle.gif)|
+
+### Cross-Section Result
+After experimenting the previous two extreme approaches, we were curious how our model with style transfer would perform when an image of a Chinese character is given to it. We attempted on that and here is the result:
+
+
+As shown in the picture, it indeed renders the given character using the given style. But the style is mostly demonstrated more in the background of the character, rather than the character itself. This is actully expected behavior, because a Chinese character does not have too much texture embed in the strokes.
+
+## Conclusion
+In this project, we experienced how to adapt an existing work that decompose a given image into a sequence of strokes to our specific tasks. We took two distinct approches to fully comprehend the original work. We first focused on enhancing the ability of the model to identify structures of a given image by modifying and training an agent that writes Chinese characters that mimics how a human would do so. Then we focused on enhancing the ability of the model to capture textures of the a given image and further apply different style transfers to the image. In order to do so, we incorperated another existing work on neural style transfer into our model so that on top of generating a sequence of strokes based on a given image, the agent renders those strokes using different styles based on another given image that supplies style information.
 ## Dataset
 - [CelebA](http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html) 
 
