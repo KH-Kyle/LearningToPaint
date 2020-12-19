@@ -98,7 +98,7 @@ For the third method, the model did not coverage. We thought the issue could res
 |--------------|-------------|--------|
 |![Demo](./material/flowers.jpg)|![Demo](./material/feathers.jpg)|![Demo](./material/flower.gif)|
 |![Demo](./material/shenyang.jpg)|![Demo](./material/candy.jpg)|![Demo](./material/temple.gif)|
-|![Demo](./material/seattle.png)|![Demo](./material/wave.jpg)|![Demo](./material/seattle.gif)|
+|![Demo](./material/qiang.png)|![Demo](./material/wave.jpg)|![Demo](./material/qiang.gif)|
 
 ### Cross-Section Result
 After experimenting the previous two extreme approaches, we were curious how our model with style transfer would perform when an image of a Chinese character is given to it. We attempted on that and here is the result:
