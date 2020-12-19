@@ -49,6 +49,10 @@ Upon successful replication of the original work, we first modified the model so
 ### Modifications
 The original model does not work well on our specific task because when it is given an image of a character, it attempts to draw that character using small an thick strokes full of textures. However, when a human writes a character, the strokes used are typically long and thick strokes. Below is an example of how the original model fails at our task:
 
+Target image of "深"    |  Target image of "度"
+:-------------------------:|:-------------------------:
+![](./material/shen.png)  |  ![](./material/du.png)
+
 Writing process of "深"    |  Writing process of "度"
 :-------------------------:|:-------------------------:
 ![](./material/shen_ori.gif)  |  ![](./material/du_ori.gif)
