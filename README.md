@@ -102,11 +102,17 @@ For the third method, the model did not coverage. We thought the issue could res
 |--------------|-------------|--------|
 |![Demo](./material/flowers.jpg)|![Demo](./material/feathers.jpg)|![Demo](./material/flower.gif)|
 |![Demo](./material/shenyang.jpg)|![Demo](./material/candy.jpg)|![Demo](./material/temple.gif)|
-|![Demo](./material/qiang.png)|![Demo](./material/wave.jpg)|![Demo](./material/qiang.gif)|
+|![Demo](./material/seattle.png)|![Demo](./material/rain_princess.jpg)|![Demo](./material/seattle.gif)|
 
 ### Cross-Section Result
 After experimenting the previous two extreme approaches, we were curious how our model with style transfer would perform when an image of a Chinese character is given to it. We attempted on that and here is the result:
 
+| Target Image | Style Image | Output |
+|--------------|-------------|--------|
+|![Demo](./material/shen_st.png)|![Demo](./material/composition_vii.jpg)|![Demo](./material/shen_st.gif)|
+|![Demo](./material/du_st.png)|![Demo](./material/woman-with-hat-matisse.jpg)|![Demo](./material/du_st.gif)|
+|![Demo](./material/xue.png)|![Demo](./material/mosaic.jpg)|![Demo](./material/xue.gif)|
+|![Demo](./material/xi.png)|![Demo](./material/Robert_Delaunay,_1906,_Portrait.jpg)|![Demo](./material/xi.gif)|
 
 As shown in the picture, it indeed renders the given character using the given style. But the style is mostly demonstrated more in the background of the character, rather than the character itself. This is actully expected behavior, because a Chinese character does not have too much texture embed in the strokes.
 
