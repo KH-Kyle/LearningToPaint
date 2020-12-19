@@ -49,9 +49,11 @@ Upon successful replication of the original work, we first modified the model so
 ### Modifications
 The original model does not work well on our specific task because when it is given an image of a character, it attempts to draw that character using small an thick strokes full of textures. However, when a human writes a character, the strokes used are typically long and thick strokes. Below is an example of how the original model fails at our task:
 
-![Wrting Process of Orginal Model](./material/qianghua_process_original.png)
+Writing process of "深"    |  Writing process of "度"
+:-------------------------:|:-------------------------:
+![](./material/shen_ori.gif)  |  ![](./material/du_ori.gif)
 
-The picture above shows how the original model attempts to write 2 Chinese characters that mean "reinforce" in English. The original model used 105 and 70 strokes, respectively, to replicate the two characters, while in Chinese the correct way of writing those characters only requires 12 and 4 strokes, respectively.
+The picture above shows how the original model attempts to write 2 Chinese characters that mean "deep" in English. The original model used 250 strokes both to replicate the two characters, while in Chinese the correct way of writing those characters only requires 11 and 8 strokes, respectively.
 
 Therefore, we largly modified the model so that it only focuses on structure of any given image. Here are some important aspects of the changes we made:
 <ul>
@@ -63,9 +65,11 @@ Therefore, we largly modified the model so that it only focuses on structure of 
 
 After applying all the modification above (code is in _chinese-character_ branch), we obtained the following result on the same task:
 
-![Wrting Process of Our Model](./material/qianghua_process_stepThick.png)
+Writing process of "深"    |  Writing process of "度"
+:-------------------------:|:-------------------------:
+![](./material/shen.gif)  |  ![](./material/du.gif)
 
-The picture above shows how our modified model writes the same 2 Chinese characters that mean "reinforce" in English. This time, our model used 32 and 14 strokes, respectively, to accomplish the task, which is significantly less than what the original model needed. Moreover, the picture shows that the resulting images look much cleaner and more like how a human would write those characters.
+The picture above shows how our modified model writes the same 2 Chinese characters that mean "deep" in English. This time, our model used 22 strokes for both characters to accomplish the task, which is significantly less than what the original model needed. Moreover, the picture shows that the resulting images look much cleaner and more like how a human would write those characters.
 
 ## Learning to Paint with Style 
 After exploring how to modify the model so that it focuses mostly on structures, we took the other extreme aspect, which is to explore how the model extracts the textures of given images.
